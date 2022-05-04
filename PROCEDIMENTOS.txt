@@ -1,0 +1,49 @@
+SHAPE TEST
+
+    Flask configuration:
+
+1. Baixar e extrair os arquivos do repositorio
+
+2. Acessar o diretorio e criar um ambiente virtual e ativa-lo atraves do comando:
+    python -m venv venv
+    . venv/bin/activate
+
+3. Instalar as dependencias e libs atraves do arquivo requirements.txt atraves do comando:
+    pip install -r requirements.txt
+
+4. Definir o file que corresponde a aplicacao Flask e o ambiente que o mesmo ira ser executado atraves do comando:
+    export FLASK_APP=app.py
+    export FLASK_ENV=development
+
+5. Adicionar ao arquivo do Dockefile a atualizacao da dependencia psycopg2 atraves do comando:
+    RUN pip install psycopg2-binary
+    # essa atualizacao é necessaria pois caso ocorra algum problema com a instalacao do pyscopg2 no ponto 3, e assim rodar o Docker-compose em ambientes Linux (Ubuntu 20.04)
+
+6. Atraves do terminal do Linux, executar o docker compose atraves do comando:
+    docker-compose up
+
+7. Com a aplicacao rodando é possivel rodar os testes atraves do comando:
+    pytest test_vessels.py
+    pytest test_equipment.py
+
+
+    Flask API guide:
+
+Com a aplicacao rodando localmente, utilizar a url base https://127.0.0.1:5000/ e abrir a aplicação POSTMAN que permite testar APIRest (web)
+    # para acessar a aplicação acesse https://www.postman.com/ ou utilize qualquer outra aplicação que permita realizar testes em API's web
+
+1. Acessar a documentação técnica dos endpoints através da documentação Swagger dos mesmos através do endpoint:
+    https://127.0.0.1:5000/apidocs
+    # para auxiliar no entendimento dos endpoints, os mesmos sao detalhadas nos docstrings
+
+2. Com a documentação técnica aberta para orientar os testes das API's e o POSTMAN aberto é possivel fazer os seguintes testes:
+
+    em vessel_endpoint.py:
+    a. get_vessel (metodo GET que retorna uma lista de todos vessel's registrados) - https://127.0.0.1:5000/list_vessel
+    b. insert_vessel (metodo POST que insere um novo vessel no db) - https://127.0.0.1:5000/insert_vessel
+
+    em equipments_endpoint.py:
+    a. insert_equipment (metodo POST que insere um novo equipamento e seus parametros no db) - https://127.0.0.1:5000/insert_equipment
+    b. update_equipment_status (metodo PUT que altera o status do parametro active de True para False de uma lista de equipamentos) - https://127.0.0.1:5000/update_equipment_status
+    c. active_equipment (metodo GET que retorna os equipamentos atralados a um vessel indicado) - https://127.0.0.1:5000/active_equipments/<vessel_id>
+    d. get_equipments (metodo GET que retorna todos os equipamentos e o vessel onde esta atribuido o mesmo) - https://127.0.0.1:5000/get_equipments

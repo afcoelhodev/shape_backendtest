@@ -80,3 +80,30 @@ def test_insert_without_name(app):
         query = db.session.query(equipment)
         query_results = db.session.execute(query).all()
         assert len(query_results) == 1
+
+def test_successful_update_equipment(app):
+    """
+    GIVEN an endpoint for change the equipment active status
+    WHEN a request is made with a list of equipment's code
+    THEN check if the response is successful and returns the new status (false for active) of equipments send on the request
+    """
+    result = app.test_client().post('equipment/update_equipment_status', json={'equipment': ['5310B9D7']})
+    assert result.get_json().get('message') == 'OK'
+    assert result.status_code == 201
+    with app.app_context():
+        query = db.session.query(equipment)
+        query_results = db.session.execute(query).all()
+        assert len(query_results) == 1
+
+def test_get_all_equipment(app):
+    """
+    GIVEN an endpoint for access all the data about equipments and his vessel assigned
+    WHEN a request is made
+    THEN check if the response is successful and returns a dict with all equipment with a vessel assigned
+    """
+    result = app.test_client().get('/equipment/all_equipments')
+    assert result.status_code == 200
+    with app.app_context():
+        query = db.session.query(equipment)
+        query_results = db.session.execute(query).all()
+        assert len(query_results) == 1

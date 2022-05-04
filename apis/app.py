@@ -9,7 +9,9 @@ from apis.equipments_endpoint import equipments_blueprint
 
 def create_app(app_name='VESSELS', test_config=False, production_conf=False):
     app = Flask(app_name)
+
     swagger = Swagger(app)
+
     if test_config:
         app.config.from_object('config.TestConfig')
     else:
@@ -25,6 +27,6 @@ def create_app(app_name='VESSELS', test_config=False, production_conf=False):
     return app
 
 
-#if __name__ == "__main__":
-#    app = create_app(production_conf=False)
-#    app.run(host="0.0.0.0", port='5000', debug=True)
+if __name__ == "__main__":
+   app = create_app(production_conf=False)
+   app.run(host="0.0.0.0", port='5000', debug=True)
